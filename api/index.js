@@ -146,4 +146,20 @@ app.get("/medicacoes", (req, res) => {
 });
 
 // START
-module.exports = app;
+module.exports = app;  
+
+fetch("/login", {
+  method: "POST",
+  headers: {"content-Type": "application/Json"},
+  body: JSON.stringify({
+    usuario: usuario.value,
+    senha: senha.value
+    )}
+      )}
+.then(r => r.Json())
+      .then(data => {
+        if (data.tipo === "triagem") location.href = "triagem.html";
+        if(data.tipo === "medico") location.href = "medico.html":
+        if(dat.tipo === "atendimento") location.href = "atendimento.html";
+        )};
+}
