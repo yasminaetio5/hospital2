@@ -1,36 +1,147 @@
 <!DOCTYPE html>
-<html>
-<head><link rel="stylesheet" href="style.css"></head>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Atendimento</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+
+            background: linear-gradient(
+                135deg,
+                #ffd1e3,
+                #f1d5ff,
+                #ddd6ff
+            );
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            padding: 35px;
+
+            background: white;
+            border-radius: 25px;
+
+            box-shadow: 0 15px 40px rgba(150, 70, 130, 0.25);
+        }
+
+        h2 {
+            text-align: center;
+            color: #d34887;
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+
+            border: 2px solid #f1c1d8;
+            border-radius: 12px;
+
+            background: #fff8fc;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #c85a9a;
+            box-shadow: 0 0 8px rgba(200, 90, 154, 0.25);
+        }
+
+        input[type="file"] {
+            background: white;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: linear-gradient(
+                135deg,
+                #e65b9b,
+                #a95bd4
+            );
+
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            box-shadow: 0 8px 20px rgba(180, 70, 150, 0.25);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(
+                135deg,
+                #d94d8d,
+                #974bc5
+            );
+        }
+    </style>
+</head>
+
 <body>
+
 <div class="container">
-<h2>Atendimento</h2>
 
-<input id="nome" placeholder="Nome">
-<input id="cpf" placeholder="CPF">
+    <h2>Atendimento</h2>
 
-<select id="tipo">
-  <option>Convenio</option>
-  <option>Particular</option>
-</select>
+    <input id="nome" placeholder="Nome">
 
-<input type="file" id="foto">
+    <input id="cpf" placeholder="CPF">
 
-<button onclick="cadastrar()">Cadastrar</button>
+    <select id="tipo">
+        <option>Convenio</option>
+        <option>Particular</option>
+    </select>
+
+    <input type="file" id="foto">
+
+    <button onclick="cadastrar()">Cadastrar</button>
+
 </div>
 
 <script>
 function cadastrar(){
- fetch("http://localhost:3000/atendimento",{
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body: JSON.stringify({
-    nome: nome.value,
-    cpf: cpf.value,
-    tipo: tipo.value
-  })
- });
- alert("Paciente enviado para triagem");
+    fetch("http://localhost:3000/atendimento", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({
+            nome: nome.value,
+            cpf: cpf.value,
+            tipo: tipo.value
+        })
+    });
+
+    alert("Paciente enviado para triagem");
 }
 </script>
+
 </body>
 </html>
