@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;}
+
+        body {
+            background-color: rgb(5, 102, 100);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .tv-container {
+            display: flex;
+            width: 95vw;
+            height: 90vh;
+            gap: 18px;
+        }
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            width: 35%;
+            gap: 18px;
+        }
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            width: 65%;
+            gap: 18px;
+        }
+        .box {
+            background-color: rgb(107, 199, 224);
+            border: 6px solid #03405a;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .box-title{
+            color: #fff;
+            font-size: 2.2vw;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-shadow: 1px 1´x 2px black;
+            margin-bottom: 12px;
+        }
+        .local-box { flex: 1;}
+        .local-number {
+            color: red;
+            font-size: 9vw;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .local-type {
+            color: #555;
+            font-size: 1.8vw;
+            font-weight: bold;
+            margin-top: 6px;
+        }
+
+        /* Historico */
+            .history-box { 
+                flex: 1;
+                justify-content: flex-start;
+                align-items: left;
+            } 
+            .history-box .box-title { font-size: 1.8w; align-self: center;}
+            #history-list {
+                list-style: none;
+                width: 100%;
+                color: rgb(147, 40, 40);
+                font-size: 1.5vw;
+                font-weight: bold;
+                text-align: left;
+            }
+            #history-list li {
+                margin-bottom: 8px;
+                border-bottom: 1px solid black;
+                padding-bottom: 5px;
+            }
+            .patient-box { flex: 3;}
+            .patient-name {
+                color: rgb(210, 26, 26);
+                font-size: 6.5vw;
+                font-weight: bold;
+                line-height: 1.2;
+                word-break: break-word;
+            }
+            /* Logo*/
+            .logo-box { flex: 1;}
+            .logo-text {
+                color: rgb(39, 68, 6);
+                font-size: 3.5vw;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            /* Animação de flash quando chama*/
+            @keyframes flash {
+                0%, 100% { opacity: 1;}
+                50% {opacity: 0.3;}
+            }
+            .flash {animation: flash 0.5s ease 3;}
+          
+    </style>
+
+    <title>midia Indoor - TV</title>
+</head>
+<body>
+ <div class="tv-container">
+    <div class="left-panel">
+        <div class="box local-box">
+            <div class="box-title " id="local-tipo">GUICHÊ</div>
+            <div class="local-number" id="local-numero">--</div>
+ </div>
+         <div class="box history-box">
+            <div class="box-title">ULTIMAS CHAMADAS</div>
+            <ul id="history-list"></ul>
+         </div>
+
+         </div>
+         <div class="right-panel">
+            <div class="box patient-box">
+                <div class="box-title">PACIENTE</div>
+                <div class="patient-name" id="patient-name">AGUARDANDO...</div>
+            </div>
+            <div class="box logo-box">
+                <div class="logo-text">🏥 sistema hospitalar</div>
+            </div>
+         </div>
+    </div>
+    <script>
+        let ultimold = null;
+        // função criada para buscar a chamada atual e o historico da tv em tempo real.
+        function atualizar(){
+            fetch("/tv/chamada")
+            .then(r => r.json())
+            .then(data => {
+                const chamada = data.chamada;
+                const historico = data.historico || [];
+
+                if (chamada) {
+                    document.getElementById("local-tipo").innerText = chamada.localTipo || "GUICHÊ";
+                    document.getElementById("local-numero").innerText = chamada.localNumero || "--";
+                    document.getElementById("patient-name").innerText = chamada.paciente || "AGUARDANDO...";
+
+                  //flash visual quando há chamada nova
+                  if (chamada.id !== ultimold) {
+                    ultimold = chamada.id;
+                    const patientBox = document.querySelector(".patient-box");
+                    patientBox.classList.remove("flash");
+                    void patientBox.offsetWidth; //reflow
+                    patientBox.classList.add("flash");
+                  }
+                }
+                //historico
+                const list = document.getElementById("history-list");
+                list.innerHTML = "";
+                historico.slice(0, 4).forEach(h => {
+                    const li = document.createElement("li");
+                    const tipo = h.localTipo ? h.localTipo.substring(0,4) : "GUIC";
+                    li.innerText = `${tipo}. ${h.localNumero} - ${h.paciente}`;
+                    list.appendChild(li);
+                }); 
+                })
+                .catch(err => console.log("Erro ao buscar chamada:", err));
+        }
+
+        // Polling a cada 2 seg
+        atualizar()
+        setInterval(atualizar, 2000);
+
+
+    </script>
+
+</body>
+</html>

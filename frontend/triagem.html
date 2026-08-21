@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Triagem</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .btn-tv{
+    background-color: rgb(76, 114, 38);
+    color: aliceblue;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 8px;
+  }
+
+  .btn-tv:hover{
+   background-color: rgb(40, 74, 6);
+  }
+
+  .pacientes-fila{
+   margin-bottom: 30px;
+   background: white;
+   border-radius: 8px;
+   padding: 16px;
+   border: 1px solid gray;
+   }
+
+   .pacientes-fila h3{
+    margin-top: 0;
+    color: rgb(45, 45, 45);
+    display: flex;
+    justify-content:space-between ;
+    align-items: center;
+   }
+
+   .pacientes-fila h3 span{
+    font-size: 13px;
+    font-weight: normal;
+    color: #666;
+   }
+
+   .fila-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border: 1px solid #dce4ff;
+   }
+
+   .fila-item strong{ font-size: 15px;}
+   .fila-item small{ color: #888; font-size: 12px;}
+   .btn-abrir-tv{
+    display: inline-block;
+    background: rgb(76, 174, 220);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+   }
+
+   .btn-abrir-tv:hover{
+    background: #117a8b;
+   }
+
+
+</style>
+</head>
+
+<body>
+<div class="container">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px;">
+    <h2 style="margin: 0;"></h2> 
+    <button class="btn-abrir-tv" onclick="window.open('tv.html', '_blank')">📺 Abrir Tela da TV</button>
+  </div>
+  
+   <div class="pacientes-fila">
+    <h3>Pacientes Cadastrados no atendimento
+      <span>Clique em "Chamar na TV" para chamar ao guichê</span>
+    </h3>
+    <div id="fila-pacientes">
+        <p style="color: #888; text-align: center;">Carregando...</p>
+    </div>
+    <button onclick="carregarPacientes()" style="margin-top: 8px; background-color: #dce4ff; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px;">
+      ♾️Atualizar lista
+    </button>
+   </div>
+
+
+<h2>🏥 Triagem Hospitalar</h2>
+<input id="nome" placeholder="Nome">
+
+<select id="sintoma">
+
+<option value="">Selecione</option>
+<option value="dor_leve">Dor leve</option>
+<option value="resfriado">Resfriado</option>
+<option value="coriza">Coriza</option>
+<option value="tosse">Tosse</option>
+<option value="febre">Febre</option>
+<option value="vomito">Vômito</option>
+<option value="diarreia">Diarreia</option>
+<option value="falta_ar_moderada">Falta de ar moderada</option>
+<option value="falta_ar_grave">Falta de ar grave</option>
+<option value="infarto">Suspeita de infarto</option>
+<option value="avc">Suspeita de AVC</option>
+<option value="convulsao">Convulsão</option>
+<option value="hemorragia">Hemorragia</option>
+
+</select>
+
+<input
+  id="temp"
+  type="number"
+  placeholder="Temperatura"
+/>
+
+<input
+  id="alergia"
+  placeholder="Alergias"
+/>
+
+<textarea
+  id="observacao"
+  placeholder="Observações"
+></textarea>
+
+<div id="resultado"></div>
+
+<button onclick="salvar()">
+Salvar Triagem
+</button>
+
+</div>
+
+<script>
+  function carregarPacientes() {
+  fetch("/pacientes")
+    .then(r => {
+      if (!r.ok) {
+        throw new Error("Erro ao buscar pacientes");
+      }
+
+      return r.json();
+    })
+    .then(pacientes => {
+      const div = document.getElementById("fila-pacientes");
+      const fila = pacientes.filter(p => p.status === "triagem");
+
+      if (fila.length === 0) {
+        div.innerHTML =
+          "<p style='color:#888; text-align:center;'>Nenhum paciente aguardando.</p>";
+        return;
+      }
+
+      div.innerHTML = "";
+
+      fila.forEach(p => {
+        const item = document.createElement("div");
+        item.className = "fila-item";
+
+        item.innerHTML = `
+          <div>
+            <strong>${p.nome}</strong><br>
+            <small>CPF: ${p.cpf || "-"} | Tipo: ${p.tipo || "-"}</small>
+          </div>
+
+          <button
+            class="btn-tv"
+            onclick="chamarNaTV('${p.nome}')"
+          >
+            📺 Chamar na TV
+          </button>
+        `;
+
+        div.appendChild(item);
+      });
+    })
+    .catch(erro => {
+      console.error(erro);
+
+      document.getElementById("fila-pacientes").innerHTML =
+        "<p style='color:red; text-align:center;'>Erro ao carregar pacientes.</p>";
+    });
+}
+
+
+</script>
+
+</body>
+</html>
