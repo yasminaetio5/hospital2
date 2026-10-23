@@ -145,5 +145,9 @@ app.get("/medicacoes", (req, res) => {
   res.json(db.consultas);
 });
 
-// START
-module.exports = app;
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Servidor hospitalar rodando na porta ${PORT}`);
+});
