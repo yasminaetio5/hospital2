@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta do Paciente</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Alta do Paciente</h1>
+
+    <form>
+
+        <label for="nome">Nome do Paciente:</label><br>
+        <input type="text" id="nome" name="nome"><br><br>
+
+        <label for="diagnostico">Diagnóstico:</label><br>
+        <textarea id="diagnostico" name="diagnostico"></textarea><br><br>
+
+        <label for="dataAlta">Data da Alta:</label><br>
+        <input type="date" id="dataAlta" name="dataAlta"><br><br>
+
+        <label for="medicacao">Medicação:</label><br>
+        <textarea id="medicacao" name="medicacao"></textarea><br><br>
+
+        <label for="observacoes">Observações:</label><br>
+        <textarea id="observacoes" name="observacoes"></textarea><br><br>
+
+        <button type="submit">
+            Registrar Alta
+        </button>
+
+        <button type="button" onclick="gerarPDF()">
+            📄 Baixar PDF da Alta
+        </button>
+
+    </form>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="alta.js"></script>
+
+</body>
+</html>

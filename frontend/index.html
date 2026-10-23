@@ -1,33 +1,117 @@
-<!DOCTYPE html>
-<html>
-<head>
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<div class="container">
-  <h2>🏥 Sistema Hospitalar</h2>
-  <input id="usuario" placeholder="Usuário">
-  <input id="senha" type="password" placeholder="Senha">
-  <button onclick="login()">Entrar</button>
-</div>
 
-<script>
-function login() {
-  fetch("http://localhost:3000/login", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      usuario: usuario.value,
-      senha: senha.value
-    })
-  })
-  .then(r => r.json())
-  .then(data => {
-    if(data.tipo === "triagem") location.href = "triagem.html";
-    if(data.tipo === "medico") location.href = "medico.html";
-    if(data.tipo === "atendimento") location.href = "atendimento.html";
-  });
-}
-</script>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Get a Job - Login Hospitalar</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <img
+        src="hospital.png.jpg"
+        alt="Logo do Hospital"
+        class="logo"
+    >
+
+    <div class="container">
+        <h2>🏥 Get a Job</h2>
+
+        <form id="formLogin">
+            <input
+                id="usuario"
+                type="text"
+                placeholder="Usuário"
+                autocomplete="username"
+                required
+            >
+
+            <input
+                id="senha"
+                type="password"
+                placeholder="Senha"
+                autocomplete="current-password"
+                required
+            >
+
+            <button id="botaoEntrar" type="submit">
+                Entrar
+            </button>
+
+            <p id="mensagem" role="status"></p>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById("formLogin");
+        const campoUsuario = document.getElementById("usuario");
+        const campoSenha = document.getElementById("senha");
+        const mensagem = document.getElementById("mensagem");
+        const botao = document.getElementById("botaoEntrar");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const usuario = campoUsuario.value.trim();
+            const senha = campoSenha.value;
+
+            mensagem.textContent = "";
+            botao.disabled = true;
+            botao.textContent = "Entrando...";
+
+            try {
+                const resposta = await fetch("/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        usuario,
+                        senha
+                    })
+                });
+
+                const data = await resposta.json();
+
+                if (!resposta.ok) {
+                    throw new Error(
+                        data.erro || "Não foi possível fazer login."
+                    );
+                }
+
+                const paginas = {
+                    triagem: "triagem.html",
+                    medico: "medico.html",
+                    atendimento: "atendimento.html"
+                };
+
+                const pagina = paginas[data.tipo];
+
+                if (!pagina) {
+                    throw new Error(
+                        "Tipo de usuário não reconhecido."
+                    );
+                }
+
+                window.location.href = pagina;
+
+            } catch (erro) {
+                console.error("Erro no login:", erro);
+
+                mensagem.textContent =
+                    erro.message === "Failed to fetch"
+                        ? "Não foi possível conectar ao servidor."
+                        : erro.message;
+
+            } finally {
+                botao.disabled = false;
+                botao.textContent = "Entrar";
+            }
+        });
+    </script>
 </body>
 </html>
+

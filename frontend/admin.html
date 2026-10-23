@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Usuários | Hospital Pro</title>
+
+ 
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #fff5f6;
+        color: #3b1018;
+    }
+
+    header {
+        background: #c2183a;
+        color: white;
+        padding: 22px 6%;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 24px;
+    }
+
+    header p {
+        margin: 8px 0 0;
+        color: #ffe1e7;
+    }
+
+    .container {
+        max-width: 1050px;
+        margin: 35px auto;
+        padding: 0 20px;
+    }
+
+    .voltar {
+        color: #c2183a;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .voltar:hover {
+        color: #8f1029;
+        text-decoration: underline;
+    }
+
+    .painel {
+        background: #ffffff;
+        padding: 26px;
+        border-radius: 14px;
+        margin-top: 22px;
+        border: 1px solid #f3c4ce;
+        box-shadow: 0 5px 20px #7f102015;
+    }
+
+    h2 {
+        margin-top: 0;
+        color: #a31330;
+    }
+
+    .formulario {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    input,
+    select {
+        width: 100%;
+        padding: 13px;
+        border: 1px solid #e5b5c0;
+        border-radius: 8px;
+        font-size: 14px;
+        background: #ffffff;
+        color: #3b1018;
+    }
+
+    input::placeholder {
+        color: #9f7b83;
+    }
+
+    input:focus,
+    select:focus {
+        outline: 2px solid #f3a4b5;
+        border-color: #c2183a;
+    }
+
+    button {
+        border: 0;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .cadastrar {
+        background: #c2183a;
+        color: #ffffff;
+    }
+
+    .cadastrar:hover {
+        background: #99132e;
+    }
+
+    #mensagem {
+        margin-top: 15px;
+        font-size: 14px;
+        color: #a31330;
+    }
+
+    .topo-lista {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .contador {
+        background: #ffe1e7;
+        color: #99132e;
+        padding: 7px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 18px;
+        border: 1px solid #f0cbd3;
+        border-radius: 10px;
+        margin-bottom: 12px;
+        background: #ffffff;
+    }
+
+    .info {
+        min-width: 0;
+    }
+
+    .nome {
+        font-weight: bold;
+        color: #8f1029;
+        overflow-wrap: anywhere;
+    }
+
+    .setor {
+        display: inline-block;
+        margin-top: 9px;
+        padding: 5px 9px;
+        border-radius: 20px;
+        background: #fff0f3;
+        color: #a31330;
+        font-size: 12px;
+    }
+
+    .excluir {
+        flex-shrink: 0;
+        color: #ffffff;
+        background: #c2183a;
+    }
+
+    .excluir:hover {
+        background: #8f1029;
+    }
+
+    .vazio {
+        padding: 25px;
+        text-align: center;
+        color: #8b6871;
+        background: #fff5f6;
+        border: 1px dashed #e5b5c0;
+        border-radius: 10px;
+    }
+
+    @media (max-width: 700px) {
+        .formulario {
+            grid-template-columns: 1fr;
+        }
+
+        .painel {
+            padding: 18px;
+        }
+
+        .card {
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .excluir {
+            padding: 10px;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+    <header>
+        <h1>Hospital Pro</h1>
+        <p>Painel administrativo · Gestão de usuários</p>
+    </header>
+
+    <main class="container">
+        <a class="voltar" href="index.html">← Voltar para o login</a>
+
+        <section class="painel">
+            <h2>Cadastrar usuário</h2>
+            <p>Preencha os dados para adicionar um novo usuário ao sistema.</p>
+
+            <form id="formUsuario">
+                <div class="formulario">
+                    <input
+                        type="text"
+                        id="usuario"
+                        placeholder="Nome de usuário (login)"
+                        required
+                    >
+
+                    <input
+                        type="password"
+                        id="senha"
+                        placeholder="Senha"
+                        required
+                    >
+
+                    <select id="tipo" required>
+                        <option value="">Selecione o setor</option>
+                        <option value="atendimento">Atendimento</option>
+                        <option value="triagem">Triagem</option>
+                        <option value="medico">Médico</option>
+                    </select>
+                </div>
+
+                <button class="cadastrar" type="submit" id="btnCadastrar">
+                    + Cadastrar usuário
+                </button>
+            </form>
+
+            <div id="mensagem" role="status" aria-live="polite"></div>
+        </section>
+
+        <section class="painel">
+            <div class="topo-lista">
+                <h2>Usuários cadastrados</h2>
+                <span class="contador" id="contador">0 usuários</span>
+            </div>
+
+            <div id="listaUsuarios">
+                Carregando usuários...
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById("formUsuario");
+        const lista = document.getElementById("listaUsuarios");
+        const mensagem = document.getElementById("mensagem");
+        const btnCadastrar = document.getElementById("btnCadastrar");
+        const contador = document.getElementById("contador");
+
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            btnCadastrar.disabled = true;
+            mensagem.textContent = "Cadastrando...";
+            mensagem.style.color = "#475569";
+
+            try {
+                const resposta = await fetch("/usuarios", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        usuario: document.getElementById("usuario").value.trim(),
+                        senha: document.getElementById("senha").value,
+                        tipo: document.getElementById("tipo").value
+                    })
+                });
+
+                const dados = await resposta.json();
+
+                if (!resposta.ok) {
+                    throw new Error(dados.erro || "Não foi possível cadastrar.");
+                }
+
+                mensagem.textContent = dados.mensagem || "Usuário cadastrado!";
+                mensagem.style.color = "#15803d";
+
+                form.reset();
+                await carregarUsuarios();
+
+            } catch (erro) {
+                mensagem.textContent = erro.message;
+                mensagem.style.color = "#dc2626";
+            } finally {
+                btnCadastrar.disabled = false;
+            }
+        });
+
+        async function carregarUsuarios() {
+            try {
+                const resposta = await fetch("/usuarios");
+
+                if (!resposta.ok) {
+                    throw new Error("Erro ao buscar usuários.");
+                }
+
+                const usuarios = await resposta.json();
+
+                lista.replaceChildren();
+                contador.textContent =
+                    usuarios.length + (usuarios.length === 1 ? " usuário" : " usuários");
+
+                if (usuarios.length === 0) {
+                    const vazio = document.createElement("div");
+                    vazio.className = "vazio";
+                    vazio.textContent = "Nenhum usuário cadastrado.";
+                    lista.appendChild(vazio);
+                    return;
+                }
+
+                usuarios.forEach(function (u) {
+                    const card = document.createElement("article");
+                    card.className = "card";
+
+                    const info = document.createElement("div");
+                    info.className = "info";
+
+                    const nome = document.createElement("div");
+                    nome.className = "nome";
+                    nome.textContent = u.usuario;
+
+                    const setor = document.createElement("span");
+                    setor.className = "setor";
+                    setor.textContent = "Setor: " + u.tipo;
+
+                    info.append(nome, setor);
+
+                    const excluir = document.createElement("button");
+                    excluir.className = "excluir";
+                    excluir.type = "button";
+                    excluir.textContent = "Excluir";
+                    excluir.setAttribute("aria-label", "Excluir usuário " + u.usuario);
+
+                    excluir.addEventListener("click", function () {
+                        excluirUsuario(u.id, u.usuario, excluir);
+                    });
+
+                    card.append(info, excluir);
+                    lista.appendChild(card);
+                });
+
+            } catch (erro) {
+                lista.textContent = erro.message;
+            }
+        }
+
+        async function excluirUsuario(id, nome, botao) {
+            if (!confirm('Deseja realmente excluir o usuário "' + nome + '"?')) {
+                return;
+            }
+
+            botao.disabled = true;
+
+            try {
+                const resposta = await fetch(
+                    "/usuarios/" + encodeURIComponent(id),
+                    { method: "DELETE" }
+                );
+
+                const dados = await resposta.json();
+
+                if (!resposta.ok) {
+                    throw new Error(dados.erro || "Não foi possível excluir.");
+                }
+
+                mensagem.textContent = dados.mensagem || "Usuário excluído.";
+                mensagem.style.color = "#15803d";
+
+                await carregarUsuarios();
+
+            } catch (erro) {
+                mensagem.textContent = erro.message;
+                mensagem.style.color = "#dc2626";
+                botao.disabled = false;
+            }
+        }
+
+        carregarUsuarios();
+    </script>
+</body>
+</html>

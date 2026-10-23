@@ -88,6 +88,46 @@
       "tipo": "Particular",
       "status": "triagem",
       "createdAt": "2026-05-15T11:16:21.579Z"
+    },
+    {
+      "id": 1787316705064,
+      "nome": "",
+      "cpf": "",
+      "tipo": "Convenio",
+      "status": "triagem",
+      "createdAt": "2026-08-21T12:51:45.064Z"
+    },
+    {
+      "id": 1787320745868,
+      "nome": "yass",
+      "cpf": "000.000.00-00",
+      "tipo": "Convenio",
+      "status": "triagem",
+      "createdAt": "2026-08-21T13:59:05.868Z"
+    },
+    {
+      "id": 1787320750010,
+      "nome": "yass",
+      "cpf": "000.000.00-00",
+      "tipo": "Convenio",
+      "status": "triagem",
+      "createdAt": "2026-08-21T13:59:10.010Z"
+    },
+    {
+      "id": 1787320765258,
+      "nome": "yass",
+      "cpf": "000.000.00-00",
+      "tipo": "Convenio",
+      "status": "triagem",
+      "createdAt": "2026-08-21T13:59:25.258Z"
+    },
+    {
+      "id": 1792757848692,
+      "nome": "joao",
+      "cpf": "0000000000",
+      "tipo": "Particular",
+      "status": "triagem",
+      "createdAt": "2026-10-23T12:17:28.692Z"
     }
   ],
   "triagens": [
@@ -245,6 +285,50 @@
       "risco": "vermelho",
       "status": "aguardando_medico",
       "createdAt": "2026-06-02T13:06:29.261Z"
+    },
+    {
+      "id": 1792676942268,
+      "nome": "joao",
+      "sintoma": "falta_ar_moderada",
+      "temperatura": 38,
+      "alergia": "ar",
+      "observacao": "",
+      "risco": "amarelo",
+      "status": "aguardando_medico",
+      "createdAt": "2026-10-22T13:49:02.268Z"
+    },
+    {
+      "id": 1792677626291,
+      "nome": "joao",
+      "sintoma": "resfriado",
+      "temperatura": 38,
+      "alergia": "ar",
+      "observacao": "",
+      "risco": "amarelo",
+      "status": "aguardando_medico",
+      "createdAt": "2026-10-22T14:00:26.291Z"
+    },
+    {
+      "id": 1792679237564,
+      "nome": "jooao",
+      "sintoma": "resfriado",
+      "temperatura": 25,
+      "alergia": "ar",
+      "observacao": "",
+      "risco": "verde",
+      "status": "aguardando_medico",
+      "createdAt": "2026-10-22T14:27:17.564Z"
+    },
+    {
+      "id": 1792757232863,
+      "nome": "joao",
+      "sintoma": "resfriado",
+      "temperatura": 38,
+      "alergia": "ar",
+      "observacao": "",
+      "risco": "amarelo",
+      "status": "aguardando_medico",
+      "createdAt": "2026-10-23T12:07:12.863Z"
     }
   ],
   "consultas": [
